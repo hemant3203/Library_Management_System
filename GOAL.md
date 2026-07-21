@@ -1,0 +1,3 @@
+I am going to learn to build a library management system from scratch in python fast api in oops concept our target is 1000 stsudents use this system with proper rate limiting of 50 users and proper try and catch block and standard error handling and logging making in production ready .   i have to write code from scratch by my own with proper understanding everystep.Also use worker thread and all LLD proerply so i get to know in depth knowledge.
+
+Guide me step by step and don't write code i will write by myself in between i will ask question guide me properly so start i will just create a backend okay
