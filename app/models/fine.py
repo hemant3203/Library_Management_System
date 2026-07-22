@@ -7,4 +7,4 @@ class Fine:
     loan_id:int
     amount:float
     reason:FineReason
-    status:FineStatus
+    status:FineStatus = FineStatus.PENDING

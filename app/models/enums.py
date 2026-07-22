@@ -8,7 +8,7 @@ class CopyStatus(str ,Enum):
 
 class FineReason(str , Enum):
     LATE="late"
-    DAMAGE="damaged"
+    DAMAGE="damage"
 
 class FineStatus(str, Enum):
     PENDING="pending"

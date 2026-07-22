@@ -13,6 +13,6 @@ class Loan:
     return_date:Optional[date]= None
 
     def is_overdue(self)->bool:
-        if self.return_date is None:
+        if self.return_date is not None:
             return False
         return date.today()>self.due_date
