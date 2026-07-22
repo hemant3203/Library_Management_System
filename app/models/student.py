@@ -7,4 +7,4 @@ class Student:
     id:int
     name:str
     email:str
-    regitered_on:date
+    registered_on:date
