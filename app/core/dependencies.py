@@ -1,5 +1,3 @@
-from datetime import date, timedelta
-
 from app.repositories.book_repository import InMemoryBookRepository
 from app.repositories.copy_repository import InMemoryCopyRepository
 from app.repositories.student_repository import InMemoryStudentRepository
@@ -16,24 +14,7 @@ student_repo = InMemoryStudentRepository()
 loan_repo = InMemoryLoanRepository()
 fine_repo = InMemoryFineRepository()
 
-catalog = CatalogService(book_repo, copy_repo)
-students = StudentService(student_repo)
-loans = LoanService(student_repo, loan_repo, copy_repo, book_repo, fine_repo)
-
-catalog.add_book("Clean Code", "Robert Martin", 500.0, 1)
-students.register_student("Ravi", "ravi@test.com")
-
-print(loans.issue_book(1, 1))
-print(copy_repo.get_by_id(1).status)
-
-loan = loan_repo.get_by_id(1)
-loan.due_date = date.today() - timedelta(days=5)   # time-travel: pretend due 5 days ago
-
-print(loans.return_book(1))
-print(copy_repo.get_by_id(1).status)
-print(fine_repo.list_pending())
-
-fines = FineService(fine_repo)
-print(fines.pay_fine(1))
-print(fine_repo.list_pending())
-print(fines.pay_fine(1))
+catalog_service = CatalogService(book_repo, copy_repo)
+student_service = StudentService(student_repo)
+loan_service = LoanService(student_repo, loan_repo, copy_repo, book_repo, fine_repo)
+fine_service = FineService(fine_repo)
