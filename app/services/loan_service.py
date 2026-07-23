@@ -8,6 +8,7 @@ from app.repositories.loan_repository import LoanRepository
 from app.repositories.copy_repository import CopyRepository
 from app.repositories.book_repository import BookRepository
 from app.repositories.fine_repository import FineRepository
+from app.exceptions.errors import ConflictError, NotFoundError
 
 LOAN_DAYS=14
 MAX_ACTIVE_LOANS=3
@@ -24,14 +25,14 @@ class LoanService:
     def issue_book(self,student_id:int ,book_id:int)->Loan:
         student=self._student_repo.get_by_id(student_id)
         if student is None:
-            raise ValueError(f"Student with id '{student_id}' not found")
+            raise NotFoundError(f"Student with id '{student_id}' not found")
         active_loan=self._loan_repo.list_active_by_student(student_id)
         if len(active_loan) >= MAX_ACTIVE_LOANS:
-            raise ValueError(f"Student with id '{student_id}' has reached the maximum {MAX_ACTIVE_LOANS} books")
+            raise ConflictError(f"Student with id '{student_id}' has reached the maximum {MAX_ACTIVE_LOANS} books")
 
         copy=self._copy_repo.find_available(book_id)
         if copy is None:
-            raise ValueError(f"Book with id '{book_id}' is not available")
+            raise ConflictError(f"Book with id '{book_id}' is not available")
 
         loan =Loan(
             id=0,
@@ -46,7 +47,7 @@ class LoanService:
     def return_book(self,copy_id:int)->Loan:
         loan=self._loan_repo.find_active_by_copy(copy_id)
         if loan is None:
-            raise ValueError(f"No active loan found for copy with id {copy_id} ")
+            raise NotFoundError(f"No active loan found for copy with id {copy_id} ")
         loan.return_date=date.today()
         copy=self._copy_repo.get_by_id(copy_id)
         copy.status=CopyStatus.AVAILABLE

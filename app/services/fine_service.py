@@ -1,6 +1,7 @@
 from app.models.fine import Fine
 from app.models.enums import FineStatus
 from app.repositories.fine_repository import FineRepository
+from app.exceptions.errors import ConflictError, NotFoundError
 
 class FineService:
     def __init__(self, fine_repo: FineRepository) -> None:
@@ -12,8 +13,8 @@ class FineService:
     def pay_fine(self ,fine_id:int)->Fine:
         fine=self._fine_repo.get_by_id(fine_id)
         if fine is None:
-            raise ValueError(f"No fine found with id {fine_id} ")
+            raise NotFoundError(f"No fine found with id {fine_id} ")
         if fine.status==FineStatus.PAID:
-            raise ValueError(f"Fine with id {fine_id} is already paid")
+            raise ConflictError(f"Fine with id {fine_id} is already paid")
         fine.status=FineStatus.PAID
         return fine

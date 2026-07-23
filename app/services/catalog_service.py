@@ -3,6 +3,7 @@ from app.models.bookcopy import BookCopy
 from app.models.enums import CopyStatus
 from app.repositories.book_repository import BookRepository
 from app.repositories.copy_repository import CopyRepository
+from app.exceptions.errors import NotFoundError
 
 class CatalogService:
     def __init__(self, book_repository: BookRepository, copy_repository: CopyRepository) -> None:
@@ -23,7 +24,7 @@ class CatalogService:
     def get_book(self, book_id:int)->Book:
         book= self._book_repository.get_by_id(book_id)
         if book is None:
-            raise ValueError(f"Book with id {book_id} not found")
+            raise NotFoundError(f"Book with id {book_id} not found")
         return book
 
     def count_available_copies(self, book_id:int)->int:
